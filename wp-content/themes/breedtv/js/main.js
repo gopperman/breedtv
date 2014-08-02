@@ -1,6 +1,4 @@
-/* Author: Greg Opperman
-
-*/
+/* Author: Greg Opperman*/
 var f, url, status;
 google.load("swfobject", "2.1");
 
@@ -60,14 +58,11 @@ function post(action, value) {
 
 function loadVideo(jQuery) {
 	var vid = [];
-	jQuery.getJSON('/random', function(data) {
+	jQuery.getJSON('/api/random', function(data) {
 		console.log(data);
 		vid['id'] = data.id;
 		vid['src'] = data.src;
 		vid['title'] = data.title;
-//	vid['id'] = '5003279';
-//	vid['src'] = 'vimeo';
-//	vid['title'] = 'Nerds Are The Biggest Danger In America';
 	}).done(function() {
 		console.log(vid);
 		$('#player').remove();
