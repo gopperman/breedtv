@@ -1,13 +1,56 @@
 /* Author: Greg Opperman*/
+
+/*** breedTV singleton ***/
+function breedTV() {
+	this.queue = [];
+
+	//Embeds a video in the DOM
+	this.play = function(vid) {
+		console.log(vid);
+		jQuery('#player').remove();
+		jQuery('#video').remove();
+		jQuery('body').append( jQuery('<div id="video"></div>'));
+		if (vid['src'] == 'youtube') {
+        		var params = { allowScriptAccess: "always", wmode:"opaque" };
+		        var atts = { id: "player" };			
+		        swfobject.embedSWF("http://www.youtube.com/v/" + vid['id'] + 
+                           "?version=3&enablejsapi=1&playerapiid=player1&iv_load_policy=3&autoplay=1&controls=0&wmode=opaque", 
+                           "video", "100%", "100%", "9", null, null, params, atts);
+		} else {
+			var iframe = '<iframe id="player" src="http://player.vimeo.com/video/'+vid['id']+'?api=1&autoplay=1" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			jQuery('#video').html(iframe);
+			f = jQuery('iframe');
+    			url = f.attr('src').split('?')[0];
+    			status = jQuery('.status');
+		}
+
+	};
+	//Plays the next video or loads up a random one
+	this.next = function() {
+		if (this.queue.length > 0) {
+
+		} else { 
+				var vid = [];
+				jQuery.getJSON('/api/random', function(data) {
+					vid['id'] = data.id;
+					vid['src'] = data.src;
+					vid['title'] = data.title;
+				}).done(function() {
+					btv.play(vid);
+			});
+		}
+	}
+}
+
+var btv = btv || new breedTV();
+/*** End breedTV ***/
 var f, url, status;
 google.load("swfobject", "2.1");
 
 //Youtube Events
 function onPlayerStateChange(newState) {
-	console.log(newState);
 	if (newState == 0) {
-		loadVideo(jQuery);
-		console.log("done");
+		btv.next();
 	}
 }
 
@@ -39,7 +82,7 @@ function onMessageReceived(e) {
             break;
            
         case 'finish':
-		loadVideo(jQuery);
+					btv.next();
             break;
     }
 }
@@ -56,32 +99,7 @@ function post(action, value) {
 }
 
 
-function loadVideo(jQuery) {
-	var vid = [];
-	jQuery.getJSON('/api/random', function(data) {
-		console.log(data);
-		vid['id'] = data.id;
-		vid['src'] = data.src;
-		vid['title'] = data.title;
-	}).done(function() {
-		console.log(vid);
-		$('#player').remove();
-		$('#video').remove();
-		$('body').append( $('<div id="video"></div>'));
-		if (vid['src'] == 'youtube') {
-        		var params = { allowScriptAccess: "always", wmode:"opaque" };
-		        var atts = { id: "player" };			
-		        swfobject.embedSWF("http://www.youtube.com/v/" + vid['id'] + 
-                           "?version=3&enablejsapi=1&playerapiid=player1&iv_load_policy=3&autoplay=1&controls=0&wmode=opaque", 
-                           "video", "100%", "100%", "9", null, null, params, atts);
-		} else {
-			var iframe = '<iframe id="player" src="http://player.vimeo.com/video/'+vid['id']+'?api=1&autoplay=1" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
-			$('#video').html(iframe);
-			f = $('iframe');
-    			url = f.attr('src').split('?')[0];
-    			status = $('.status');
-		}
-	});
-}
-jQuery(document).ready(loadVideo);
+jQuery(document).ready(function () {
+	btv.next();
+});
 

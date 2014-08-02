@@ -22,4 +22,4 @@
 </head>
 
 <body <?php body_class(); ?>>
-  <h1>BreedTV <blink><a onclick="loadVideo(jQuery)" title="SKIP">&gt;&gt;</a></blink></h1>
+  <h1>BreedTV <blink><a onclick="btv.next()" title="SKIP">&gt;&gt;</a></blink></h1>
