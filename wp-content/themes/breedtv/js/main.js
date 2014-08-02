@@ -3,7 +3,6 @@
 /*** breedTV singleton ***/
 function breedTV() {
 	this.queue = [];
-
 	//Embeds a video in the DOM
 	this.play = function(vid) {
 		console.log(vid);
@@ -25,17 +24,19 @@ function breedTV() {
 		}
 
 	};
-	//Plays the next video or loads up a random one
+	//Plays the next video or queues up random onea
 	this.next = function() {
 		if (this.queue.length > 0) {
-
+			var vid = this.queue.shift();
+			btv.play(vid);
 		} else { 
-				var vid = [];
-				jQuery.getJSON('/api/random', function(data) {
-					vid['id'] = data.id;
-					vid['src'] = data.src;
-					vid['title'] = data.title;
+				jQuery.getJSON('/api/random?n=20', function(data) {
+					var i = data.length;
+					while (i--) {
+						btv.queue.push(data[i]);
+					} 
 				}).done(function() {
+					var vid = btv.queue.shift();
 					btv.play(vid);
 			});
 		}
