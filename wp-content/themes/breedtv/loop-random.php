@@ -9,16 +9,8 @@
 <?php while (have_posts()) : the_post(); ?>
 <?php	$url = get_post_meta(get_the_ID(), 'URL', true); 
 	$output = array();
-	if (strpos($url, "youtube")) {
-		$output['src'] = "youtube";
-		$strip = array("https", "http", "://www.youtube.com/watch?v=");
-		$url = str_replace($strip, "", $url); ?>
-	<?php } else { 
-		$output['src'] = "vimeo";
-		$strip = array("https", "http", "://vimeo.com/");
-		$url = str_replace($strip, "", $url); ?>
-	<?php }
-	$output['id'] = $url;
+	$output['src'] = btv_source($url);
+	$output['id'] = btv_clean_url($url);
 	$output['title'] = get_the_title(); ?>
 <?php endwhile; /* End loop */ ?>
 <?= json_encode($output); ?>
