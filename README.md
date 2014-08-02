@@ -1,4 +1,4 @@
 breedtv
 =======
 
-Wordpress theme and Front-end for BreedTV
+Wordpress and front-end for BreedTV

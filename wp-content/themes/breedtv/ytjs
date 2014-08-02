@@ -1,0 +1,75 @@
+<?php /* Start loop */
+        $args = array(
+                'post_type' => 'post',
+                'orderby' => 'rand',
+                'posts_per_page' => 1
+        );
+        $wp_query = new WP_Query($args);
+?>
+<?php while (have_posts()) : the_post(); ?>
+<?php   $url = get_post_meta(get_the_ID(), 'URL', true);
+        if (strpos($url, "youtube")) {
+                $strip = array("https", "http", "://www.youtube.com/watch?v=");
+                $url = str_replace($strip, "", $url); ?>
+    <script src="//www.google.com/jsapi" type="text/javascript"></script>
+    <script type="text/javascript">
+      google.load("swfobject", "2.1");
+    </script>    
+    <script type="text/javascript">
+      
+      // This function is called when an error is thrown by the player
+      function onPlayerError(errorCode) {
+        alert("An error occured of type:" + errorCode);
+      }
+      
+      // This function is called when the player changes state
+      function onPlayerStateChange(newState) {
+		if (newState == 0) {
+			//DONE
+		}
+      }
+      
+      // Display information about the current state of the player
+      function updatePlayerInfo() {
+        // Also check that at least one function exists since when IE unloads the
+        // page, it will destroy the SWF before clearing the interval.
+        if(ytplayer && ytplayer.getDuration) {
+        }
+      }
+      
+      // This function is automatically called by the player once it loads
+      function onYouTubePlayerReady(playerId) {
+        ytplayer = document.getElementById("ytPlayer");
+        // This causes the updatePlayerInfo function to be called every 250ms to
+        // get fresh data from the player
+        setInterval(updatePlayerInfo, 250);
+        updatePlayerInfo();
+        ytplayer.addEventListener("onStateChange", "onPlayerStateChange");
+        ytplayer.addEventListener("onError", "onPlayerError");
+      }
+      
+      // The "main method" of this sample. Called when someone clicks "Run".
+      function loadPlayer() {
+        // The video to load
+        var videoID = "<?= $url ?>"
+        // Lets Flash from another domain call JavaScript
+        var params = { allowScriptAccess: "always" };
+        // The element id of the Flash embed
+        var atts = { id: "ytPlayer" };
+        // All of the magic handled by SWFObject (http://code.google.com/p/swfobject/)
+        swfobject.embedSWF("http://www.youtube.com/v/" + videoID + 
+                           "?version=3&enablejsapi=1&playerapiid=player1&autoplay=1&iv_load_policy=3", 
+                           "videoDiv", "100%", "100%", "9", null, null, params, atts);
+      }
+      function _run() {
+        loadPlayer();
+      }
+      google.setOnLoadCallback(_run);
+    </script>
+<div id="videoDiv">Loading...</div>
+        <?php } else {
+                $strip = array("https", "http", "://vimeo.com/");
+                $url = str_replace($strip, "", $url); ?>
+                <iframe id="player" src="http://player.vimeo.com/video/<?= $url ?>?autoplay=1" width="100%"  frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+        <?php } ?>
+<?php endwhile; /* End loop */ ?>
