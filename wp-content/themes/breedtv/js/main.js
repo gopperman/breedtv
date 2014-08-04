@@ -44,6 +44,11 @@ function breedTV() {
 }
 
 var btv = btv || new breedTV();
+
+//We need this function because of closures or something?
+function load() {
+	btv.next();
+}
 /*** End breedTV ***/
 var f, url, status;
 google.load("swfobject", "2.1");
@@ -51,7 +56,7 @@ google.load("swfobject", "2.1");
 //Youtube Events
 function onPlayerStateChange(newState) {
 	if (newState == 0) {
-		btv.next();
+		load();
 	}
 }
 
@@ -102,5 +107,6 @@ function post(action, value) {
 
 jQuery(document).ready(function () {
 	btv.next();
+
 });
 
