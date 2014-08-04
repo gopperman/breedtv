@@ -50,10 +50,8 @@ function roots_scripts() {
   }
 
   wp_register_script('roots_plugins', get_template_directory_uri() . '/js/plugins.js', false, null, true);
-  wp_register_script('google_jsapi', '//www.google.com/jsapi', false, null, true);
   wp_register_script('roots_main', get_template_directory_uri() . '/js/main.js', false, null, true);
   wp_enqueue_script('roots_plugins');
-  wp_enqueue_script('google_jsapi');
   wp_enqueue_script('roots_main');
 }
 

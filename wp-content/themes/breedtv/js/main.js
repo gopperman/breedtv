@@ -10,11 +10,23 @@ function breedTV() {
 		jQuery('#video').remove();
 		jQuery('body').append( jQuery('<div id="video"></div>'));
 		if (vid['src'] == 'youtube') {
-        		var params = { allowScriptAccess: "always", wmode:"opaque" };
-		        var atts = { id: "player" };			
-		        swfobject.embedSWF("http://www.youtube.com/v/" + vid['id'] + 
-                           "?version=3&enablejsapi=1&playerapiid=player1&iv_load_policy=3&autoplay=1&controls=0&wmode=opaque", 
-                           "video", "100%", "100%", "9", null, null, params, atts);
+			//var iframe = '<iframe id="player" type="text/html" src="http://www.youtube.com/embed/'+ vid['id'] + '?enablejsapi=1&rel=0&playerapiid=player1&iv_load_policy=3&autoplay=1&controls=0&wmode=opaque" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			//jQuery('#video').html(iframe);
+			player = new YT.Player('video', {
+          width: '100%',
+          videoId: vid['id'],
+					playerVars: { 
+						'autoplay': 1, 
+						'controls': 0,
+						'enablejsapi': 1,
+						'rel': 0,
+						'iv_load_policy': 3,
+						'wmode': 'opaque'
+					},
+          events: {
+            'onStateChange': onPlayerStateChange
+      		}
+			});
 		} else {
 			var iframe = '<iframe id="player" src="http://player.vimeo.com/video/'+vid['id']+'?api=1&autoplay=1" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 			jQuery('#video').html(iframe);
@@ -24,7 +36,7 @@ function breedTV() {
 		}
 
 	};
-	//Plays the next video or queues up random onea
+	//Plays the next video or queues up random ones
 	this.next = function() {
 		if (this.queue.length > 0) {
 			var vid = this.queue.shift();
@@ -45,24 +57,14 @@ function breedTV() {
 
 var btv = btv || new breedTV();
 
-//We need this function because of closures or something?
-function load() {
-	btv.next();
-}
 /*** End breedTV ***/
 var f, url, status;
-google.load("swfobject", "2.1");
 
 //Youtube Events
 function onPlayerStateChange(newState) {
-	if (newState == 0) {
-		load();
+	if (newState['data'] == 0) {
+		btv.next();
 	}
-}
-
-function onYouTubePlayerReady(playerId) {
-        ytplayer = document.getElementById("player");
-        ytplayer.addEventListener("onStateChange", "onPlayerStateChange");
 }
 
 //Vimeo Events
@@ -106,7 +108,14 @@ function post(action, value) {
 
 
 jQuery(document).ready(function () {
-	btv.next();
+	//Loads youtube API asynchronously
+	var tag = document.createElement('script');
 
+  tag.src = "http://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);	
 });
 
+function onYouTubeIframeAPIReady() {
+	btv.next();
+}
