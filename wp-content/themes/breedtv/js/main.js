@@ -18,6 +18,7 @@ function breedTV() {
 					playerVars: { 
 						'autoplay': 1, 
 						'controls': 0,
+						'showinfo': 0,
 						'enablejsapi': 1,
 						'rel': 0,
 						'iv_load_policy': 3,
