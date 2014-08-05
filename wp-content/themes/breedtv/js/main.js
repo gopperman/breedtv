@@ -54,7 +54,9 @@ function breedTV() {
 		}
 		//Update sidebar and history
 		var permalink = "http://breedtv.com/" + vid['slug'];
-		history.pushState({url: permalink}, vid['title'], '/' + vid['slug']);
+		if (window.history.state != "true") {
+			history.pushState({url: permalink, visited: "true"}, vid['title'], '/' + vid['slug']);
+		}
 		jQuery('#title').html('<a class="permalink">' + vid['title'] + "</a>");
 		jQuery('.permalink').attr('href', permalink);
 		jQuery('.fbshare').attr('href', "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(permalink));
