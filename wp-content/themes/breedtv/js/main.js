@@ -1,5 +1,7 @@
 /* Author: Greg Opperman*/
 
+var f, vimurl, status;
+
 /*** breedTV singleton ***/
 function breedTV() {
 	this.queue = [];
@@ -8,14 +10,12 @@ function breedTV() {
 	reqURI = reqURI.replace('http://breedtv.com/', '');
 	if ((reqURI.indexOf('channel/') < 0) && (reqURI.indexOf('tag/') < 0) && reqURI.length > 1) {
 		reqURI = reqURI.replace('/', '');
-		console.log(reqURI);
 		jQuery.getJSON('/api/single?slug='+reqURI, function(data) {
 			var i = data.length;
 			while (i--) {
 				btv.queue.push(data[i]);
 			}
     }).done(function() {
-			console.log(btv.queue);
    	});
 
 	}
@@ -46,10 +46,10 @@ function breedTV() {
       		}
 			});
 		} else {
-			var iframe = '<iframe id="player" src="http://player.vimeo.com/video/'+vid['id']+'?api=1&autoplay=1" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+			var iframe = '<iframe class="vimeo" id="player" src="http://player.vimeo.com/video/'+vid['id']+'?api=1&autoplay=1" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 			jQuery('#video').html(iframe);
-			f = jQuery('iframe');
-    			url = f.attr('src').split('?')[0];
+			f = jQuery('.vimeo');
+    			vimurl = f.attr('src').split('?')[0];
     			status = jQuery('.status');
 		}
 		//Update sidebar and history
@@ -82,7 +82,6 @@ function breedTV() {
 var btv = btv || new breedTV();
 
 /*** End breedTV ***/
-var f, url, status;
 
 //Youtube Events
 function onPlayerStateChange(newState) {
@@ -127,7 +126,7 @@ function post(action, value) {
         data.value = value;
     }
     
-    f[0].contentWindow.postMessage(JSON.stringify(data), url);
+    f[0].contentWindow.postMessage(JSON.stringify(data), vimurl);
 }
 
 
