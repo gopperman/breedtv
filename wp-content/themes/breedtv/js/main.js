@@ -6,7 +6,7 @@ function breedTV() {
 	//Check for single permalink
 	var reqURI = document.URL;
 	reqURI = reqURI.replace('http://breedtv.com/', '');
-	if ((reqURI.indexOf('channel/') < 0) && (reqURI.indexOf('tag/') < 0)) {
+	if ((reqURI.indexOf('channel/') < 0) && (reqURI.indexOf('tag/') < 0) && reqURI.length > 1) {
 		reqURI = reqURI.replace('/', '');
 		console.log(reqURI);
 		jQuery.getJSON('/api/single?slug='+reqURI, function(data) {
@@ -15,6 +15,7 @@ function breedTV() {
 				btv.queue.push(data[i]);
 			}
     }).done(function() {
+			console.log(btv.queue);
    	});
 
 	}
@@ -51,8 +52,9 @@ function breedTV() {
     			url = f.attr('src').split('?')[0];
     			status = jQuery('.status');
 		}
-		//Update sidebar
+		//Update sidebar and history
 		var permalink = "http://breedtv.com/" + vid['slug'];
+		history.pushState({}, vid['title'], '/' + vid['slug']);
 		jQuery('#title').html('<a class="permalink">' + vid['title'] + "</a>");
 		jQuery('.permalink').attr('href', permalink);
 		jQuery('.fbshare').attr('href', "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(permalink));
