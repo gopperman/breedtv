@@ -8,7 +8,7 @@ function breedTV() {
 		console.log(vid);
 		jQuery('#player').remove();
 		jQuery('#video').remove();
-		jQuery('body').append( jQuery('<div id="video"></div>'));
+		jQuery('main').append( jQuery('<div id="video"></div>'));
 		if (vid['src'] == 'youtube') {
 			//var iframe = '<iframe id="player" type="text/html" src="http://www.youtube.com/embed/'+ vid['id'] + '?enablejsapi=1&rel=0&playerapiid=player1&iv_load_policy=3&autoplay=1&controls=0&wmode=opaque" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
 			//jQuery('#video').html(iframe);
@@ -22,7 +22,8 @@ function breedTV() {
 						'enablejsapi': 1,
 						'rel': 0,
 						'iv_load_policy': 3,
-						'wmode': 'opaque'
+						'wmode': 'opaque',
+						'origin': 'http://breedtv.com'
 					},
           events: {
             'onStateChange': onPlayerStateChange
@@ -35,7 +36,12 @@ function breedTV() {
     			url = f.attr('src').split('?')[0];
     			status = jQuery('.status');
 		}
-
+		//Update sidebar
+		var permalink = "http://breedtv.com/" + vid['slug'];
+		jQuery('#title').html('<a class="permalink">' + vid['title'] + "</a>");
+		jQuery('.permalink').attr('href', permalink);
+		jQuery('.fbshare').attr('href', "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(permalink));
+		jQuery('.tweet').attr('href', "http://twitter.com/intent/tweet?via=breedtv&url=" + encodeURIComponent(permalink) + "&text=" + encodeURI(vid['title']));
 	};
 	//Plays the next video or queues up random ones
 	this.next = function() {
@@ -115,6 +121,15 @@ jQuery(document).ready(function () {
   tag.src = "http://www.youtube.com/iframe_api";
   var firstScriptTag = document.getElementsByTagName('script')[0];
   firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);	
+
+	$('#close-sidebar').click(function() {
+		$('header').fadeOut(0);
+		$('main').css('left', '0');
+	});
+	$('#open-sidebar').click(function() {
+		$('header').fadeIn(0);
+		$('main').css('left', '200px');
+	});
 });
 
 function onYouTubeIframeAPIReady() {

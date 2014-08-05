@@ -13,6 +13,7 @@
 	$output['src'] = btv_source($url);
 	$output['id'] = btv_clean_url($url);
 	$output['title'] = get_the_title(); 
+	$output['slug'] = $post->post_name;
 	$vids[] = $output;	
 	?>
 <?php endwhile; /* End loop */ ?>
