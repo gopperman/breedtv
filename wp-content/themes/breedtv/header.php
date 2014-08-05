@@ -28,7 +28,7 @@
 		<a id="close-sidebar">[x]</a>
 		<div id="video-info">
 			<p><img src="/img/favicon-84x84.png" alt="BreedTV" /></p>
-			<h2 id="title"><a href="" class="permalink">Breed TV</a></h2>
+			<h2 id="title"><a href="" class="permalink">Loading...</a></h2>
 			<p id="share"><a href="" class="permalink">link</a> &middot; 
 			<a target="_blank" class="fbshare" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbreedtv.com.com">share</a> &middot; 
 			<a target="_blank" class="tweet" href="https://twitter.com/intent/tweet?url=http%3a%2f%2fbreedtv.com&via=breedtv">tweet</a></p>

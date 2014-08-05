@@ -3,6 +3,21 @@
 /*** breedTV singleton ***/
 function breedTV() {
 	this.queue = [];
+	//Check for single permalink
+	var reqURI = document.URL;
+	reqURI = reqURI.replace('http://breedtv.com/', '');
+	if ((reqURI.indexOf('channel/') < 0) && (reqURI.indexOf('tag/') < 0)) {
+		reqURI = reqURI.replace('/', '');
+		console.log(reqURI);
+		jQuery.getJSON('/api/single?slug='+reqURI, function(data) {
+			var i = data.length;
+			while (i--) {
+				btv.queue.push(data[i]);
+			}
+    }).done(function() {
+   	});
+
+	}
 	//Embeds a video in the DOM
 	this.play = function(vid) {
 		console.log(vid);
