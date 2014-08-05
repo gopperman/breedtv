@@ -54,7 +54,7 @@ function breedTV() {
 		}
 		//Update sidebar and history
 		var permalink = "http://breedtv.com/" + vid['slug'];
-		history.pushState({}, vid['title'], '/' + vid['slug']);
+		history.pushState({url: permalink}, vid['title'], '/' + vid['slug']);
 		jQuery('#title').html('<a class="permalink">' + vid['title'] + "</a>");
 		jQuery('.permalink').attr('href', permalink);
 		jQuery('.fbshare').attr('href', "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(permalink));
@@ -146,6 +146,12 @@ jQuery(document).ready(function () {
 		$('header').fadeIn(0);
 		$('main').css('left', '200px');
 	});
+	$(window).bind("popstate", function(e) {
+    var state = e.originalEvent.state;
+    if(state.url) {
+			window.location.href = state.url;
+    }
+});
 });
 
 function onYouTubeIframeAPIReady() {
