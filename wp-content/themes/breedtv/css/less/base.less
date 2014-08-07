@@ -72,6 +72,25 @@ header {
 	top: 15px;
 	left: 5px;
 	z-index: 2;
+	color: rgba(255,255,255,.25);
+	&:hover {
+		color: @secondary;
+	}
+}
+
+#tags {
+	padding: 20px 0;
+}
+a.tag, a.tag:visited {
+	display: inline-block;
+	background: @secondary;
+	color: @black;
+	padding: 4px;
+	.rounded(3px);
+	margin: 0 6px 6px 0;
+	font-size: 11px;
+	white-space: nowrap;
+	&:hover {color: @white;}
 }
 p {margin: 0; letter-spacing: 2px;}
 img {clear: both;}
@@ -87,7 +106,6 @@ img {clear: both;}
 }
 #social {
 	line-height: 22px;
-	padding-top: 50px;
 }
 .like, .follow {
 	display: inline;
@@ -164,9 +182,9 @@ h2 {
 	background: @secondary;
 	padding: 5px;
 	a, a:visited {
-		color: @white;
+		color: @black;
 		&:hover {
-			color: @white;
+			color: @black;
 		}
 	}
 }

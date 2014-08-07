@@ -1,11 +1,14 @@
-/* Author: Greg Opperman*/
+/* Author: Greg Opperman */
 
 var f, vimurl, status;
-
+var title = $('#title'), link = $('.permalink'), fbshare = $('.fbshare'), tweet = $('.tweet'), tags = $('#tags'); 
 /*** breedTV singleton ***/
 function breedTV() {
 	this.queue = [];
-	//Check for single permalink
+	this.tag = "";
+	this.cat = "";
+
+	//Check for single, tag, category
 	var reqURI = document.URL;
 	reqURI = reqURI.replace('http://breedtv.com/', '');
 	if ((reqURI.indexOf('channel/') < 0) && (reqURI.indexOf('tag/') < 0) && reqURI.length > 1) {
@@ -18,6 +21,18 @@ function breedTV() {
     }).done(function() {
    	});
 
+	} else {
+		if (reqURI.indexOf('tag/') > -1) {
+			reqURI = reqURI.replace('tag/', '');
+			reqURI = reqURI.replace('/', '');
+			this.tag = reqURI;
+		} else {
+			if (reqURI.indexOf('channel/') > -1) {
+				reqURI = reqURI.replace('channel/', '');
+				reqURI = reqURI.replace('/', '');
+				this.cat = reqURI;
+			}
+		}
 	}
 	//Embeds a video in the DOM
 	this.play = function(vid) {
@@ -26,8 +41,6 @@ function breedTV() {
 		jQuery('#video').remove();
 		jQuery('main').append( jQuery('<div id="video"></div>'));
 		if (vid['src'] == 'youtube') {
-			//var iframe = '<iframe id="player" type="text/html" src="http://www.youtube.com/embed/'+ vid['id'] + '?enablejsapi=1&rel=0&playerapiid=player1&iv_load_policy=3&autoplay=1&controls=0&wmode=opaque" width="100%" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
-			//jQuery('#video').html(iframe);
 			player = new YT.Player('video', {
           width: '100%',
           videoId: vid['id'],
@@ -54,13 +67,19 @@ function breedTV() {
 		}
 		//Update sidebar and history
 		var permalink = "http://breedtv.com/" + vid['slug'];
-		if (window.history.state != "true") {
+		if (window.history.state != "true" && btv.tag.length == 0 && btv.cat.length == 0) {
 			history.pushState({url: permalink, visited: "true"}, vid['title'], '/' + vid['slug']);
 		}
-		jQuery('#title').html('<a class="permalink">' + vid['title'] + "</a>");
-		jQuery('.permalink').attr('href', permalink);
-		jQuery('.fbshare').attr('href', "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(permalink));
-		jQuery('.tweet').attr('href', "http://twitter.com/intent/tweet?via=breedtv&url=" + encodeURIComponent(permalink) + "&text=" + encodeURI(vid['title']));
+		title.html('<a class="permalink">' + vid['title'] + "</a>");
+		link.attr('href', permalink);
+		fbshare.attr('href', "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(permalink));
+		tweet.attr('href', "http://twitter.com/intent/tweet?via=breedtv&url=" + encodeURIComponent(permalink) + "&text=" + encodeURI(vid['title']));
+
+		tags.html('');
+		vid['tags'].forEach(function(tag) {
+			var markup = '<a class="tag" href="/tag/' + tag['slug'] + '">' + tag['name'] + '</a>';
+			tags.append(markup);
+		});
 	};
 	//Plays the next video or queues up random ones
 	this.next = function() {
@@ -68,7 +87,14 @@ function breedTV() {
 			var vid = this.queue.shift();
 			btv.play(vid);
 		} else { 
-				jQuery.getJSON('/api/random?n=20', function(data) {
+				var getURI = '/api/random?n=20';
+				if (btv.tag.length > 0) {
+					getURI += '&tag='+btv.tag;
+				}
+				if (btv.cat.length > 0) {
+					getURI += '&cat='+btv.cat;
+				}
+				jQuery.getJSON(getURI, function(data) {
 					var i = data.length;
 					while (i--) {
 						btv.queue.push(data[i]);

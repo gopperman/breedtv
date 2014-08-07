@@ -535,8 +535,6 @@ TOOLS
   overflow: hidden;
 }
 .link-style {
-  font-family: 'camcorderregular_ol1';
-  text-shadow: 0 0 1px #000000;
   color: #33ff33;
   text-decoration: none;
 }
@@ -898,16 +896,14 @@ and will be used across all viewports.
 /*********************
 GENERAL STYLES
 *********************/
+* {
+  box-sizing: border-box;
+}
 body {
-  font-family: 'camcorderregular_ol1', Georgia, serif;
+  font-family: 'camcorderregular_reg', sans-serif;
   font-size: 14px;
   line-height: 1.5;
   color: #fff;
-  background: url(/assets/test-pattern.png) no-repeat;
-  -webkit-background-size: 100% auto;
-  -moz-background-size: 100% auto;
-  -o-background-size: 100% auto;
-  background-size: 100% auto;
 }
 #video {
   position: absolute;
@@ -933,10 +929,101 @@ object body,
 header#banner {
   display: none;
 }
-/********************
-WORDPRESS BODY CLASSES
-style a page via class
-********************/
+main {
+  background: url(/assets/test-pattern.png) no-repeat;
+  -webkit-background-size: 100% auto;
+  -moz-background-size: 100% auto;
+  -o-background-size: 100% auto;
+  background-size: 100% auto;
+  float: right;
+  display: block;
+  position: absolute;
+  left: 200px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+header {
+  padding: 35px 0 50px 0;
+  width: 200px;
+  height: 100%;
+  float: left;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  background: #000;
+  z-index: 3;
+  text-align: center;
+  overflow-y: scroll;
+}
+#close-sidebar {
+  position: absolute;
+  top: 15px;
+  right: 5px;
+}
+#open-sidebar {
+  position: absolute;
+  top: 15px;
+  left: 5px;
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.25);
+}
+#open-sidebar:hover {
+  color: #00ff00;
+}
+#tags {
+  padding: 20px 0;
+}
+a.tag,
+a.tag:visited {
+  display: inline-block;
+  background: #00ff00;
+  color: #000000;
+  padding: 4px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  margin: 0 6px 6px 0;
+  font-size: 11px;
+  white-space: nowrap;
+}
+a.tag:hover,
+a.tag:visited:hover {
+  color: #ffffff;
+}
+p {
+  margin: 0;
+  letter-spacing: 2px;
+}
+img {
+  clear: both;
+}
+#share {
+  font-size: 10px;
+}
+#share a,
+#share a:visited {
+  color: #ffffff;
+}
+#share a:hover,
+#share a:visited:hover {
+  text-decoration: underline;
+}
+#social {
+  line-height: 22px;
+}
+.like,
+.follow {
+  display: inline;
+  height: 22px !important;
+  width: 60px;
+}
+.like {
+  width: 50px;
+}
+.colophon {
+  font-size: 13px;
+}
 /*********************
 LAYOUT & GRID STYLES
 *********************/
@@ -945,20 +1032,26 @@ LAYOUT & GRID STYLES
   margin: 0 auto;
 }
 /*********************
+HEADER SYTLES
+*********************/
+/*********************
+SIDEBARS & ASIDES
+*********************/
+/*********************
+FOOTER STYLES
+*********************/
+footer {
+  clear: both;
+}
+/*********************
 LINK STYLES
 *********************/
 a,
 a:visited {
   cursor: pointer;
   cursor: hand;
-  font-family: 'camcorderregular_ol1';
-  text-shadow: 0 0 1px #000000;
   color: #33ff33;
   text-decoration: none;
-  /* on click */
-
-  /* mobile tap color */
-
 }
 a:hover,
 a:visited:hover,
@@ -966,16 +1059,6 @@ a:focus,
 a:visited:focus {
   color: #00ff00;
   text-decoration: none;
-}
-a:link,
-a:visited:link {
-  /*
-		this highlights links on iPhones/iPads.
-		so it basically works like the :hover selector
-		for mobile devices.
-		*/
-
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 /******************************************************************
 H1, H2, H3, H4, H5 STYLES
@@ -993,20 +1076,35 @@ h5,
   text-rendering: optimizelegibility;
   font-weight: 500;
 }
-h1,
-.h1 {
+h1 {
   font-size: 2.5em;
+  font-family: 'camcorderregular_ol1', Georgia, serif;
   line-height: 1.333em;
   position: absolute;
   bottom: 20px;
   right: 20px;
   z-index: 9999999999;
 }
-h2,
-.h2 {
-  font-size: 1.75em;
-  line-height: 1.4em;
-  margin-bottom: 0.375em;
+h1 a,
+h1 a:visited {
+  font-family: 'camcorderregular_ol1';
+  text-shadow: 0 0 1px #000000;
+}
+h2 {
+  font-size: 1.5em;
+  line-height: 1.2em;
+  margin: 0 0 5px 0;
+  letter-spacing: 2px;
+  background: #00ff00;
+  padding: 5px;
+}
+h2 a,
+h2 a:visited {
+  color: #000000;
+}
+h2 a:hover,
+h2 a:visited:hover {
+  color: #000000;
 }
 h3,
 .h3 {
@@ -1023,350 +1121,6 @@ h5,
   line-height: 2.09em;
   text-transform: uppercase;
   letter-spacing: 2px;
-}
-/*********************
-HEADER SYTLES
-*********************/
-/*********************
-NAVIGATION STYLES
-*********************/
-/*
-all navs have a .nav class applied via
-the wp_menu function, this is so we can
-easily just write on group of styles for
-the navs on the site and our css is cleaner
-and moe scalable.
-*/
-.nav {
-  /* end .menu li */
-
-  /* highlight current page */
-
-  /* end current highlighters */
-
-}
-.nav li {
-  /*
-		so you really have to rethink your dropdowns for mobile.
-		you don't want to have it expand too much because the
-		screen is so small. How you manage your menu should
-		depend on the project. Here's some great info on it:
-		http://www.alistapart.com/articles/organizing-mobile/
-		*/
-
-}
-.nav li a {
-  display: block;
-  text-decoration: none;
-  padding: 10px 10px;
-}
-.nav li ul.sub-menu li a,
-.nav li ul.children li a {
-  padding-left: 30px;
-}
-/* end .nav */
-/*********************
-POSTS & CONTENT STYLES
-*********************/
-#content {
-  margin-top: 2.2em;
-}
-/* post content */
-.post-content {
-  /*
-			image alignment on a screen this size may be
-			a bit difficult. It's set to start aligning
-			and floating images at the next breakpoint,
-			but it's up to you. Feel free to change it up.
-			*/
-
-}
-.post-content img {
-  margin: 0 0 1.5em 0;
-  max-width: 100%;
-  height: auto;
-}
-.post-content video,
-.post-content object {
-  max-width: 100%;
-  height: auto;
-}
-.post-content pre,
-.post-content code {
-  background: #eee;
-  border: 1px solid #cecece;
-  padding: 10px;
-}
-/* end .post-content */
-.wp-caption {
-  background: #eee;
-  padding: 5px;
-  /* images inside wp-caption */
-
-}
-.wp-caption img {
-  margin-bottom: 0;
-  width: 100%;
-}
-.wp-caption p.wp-caption-text {
-  font-size: 0.85em;
-  margin: 4px 0 7px;
-  text-align: center;
-}
-/* end .wp-caption */
-/******************************************************************
-PAGE NAVI STYLES
-******************************************************************/
-.page-navigation,
-.wp-prev-next {
-  margin: 1.1em 0 2.2em;
-}
-.bones_page_navi {
-  /* current page link */
-
-  /* end .bones_page_navi .bpn-current */
-
-  /* common styles for page-navi links */
-
-  /* remove the bg on end links */
-
-  /* previous link */
-
-  /* next page link */
-
-  /* first page link */
-
-  /* last page link */
-
-}
-.bones_page_navi li {
-  float: left;
-  margin-left: 10px;
-}
-.bones_page_navi li a {
-  padding: 3px 6px;
-  display: block;
-  text-decoration: none;
-  position: relative;
-}
-.bones_page_navi li a:hover,
-.bones_page_navi li a:focus {
-  color: #f01d4f;
-  text-decoration: underline;
-}
-.bones_page_navi li.bpn-current {
-  padding: 3px 6px;
-  border-bottom: 2px solid #f01d4f;
-  position: relative;
-}
-.bones_page_navi li.bpn-current a {
-  /* hovering on current page link */
-
-}
-.bones_page_navi li.bpn-prev-link,
-.bones_page_navi li.bpn-next-link {
-  font-weight: 700;
-}
-.bones_page_navi li.bpn-prev-link a,
-.bones_page_navi li.bpn-next-link a {
-  padding: 0;
-}
-.bones_page_navi li.bpn-prev-link a:hover,
-.bones_page_navi li.bpn-next-link a:hover,
-.bones_page_navi li.bpn-first-page-link a:hover,
-.bones_page_navi li.bpn-last-page-link a:hover {
-  background: none;
-}
-/* end .bones_page_navi */
-/* fallback previous & next links */
-.wp-prev-next .prev-link {
-  float: left;
-}
-.wp-prev-next .next-link {
-  float: right;
-}
-/* end .wp-prev-next */
-/******************************************************************
-COMMENT STYLES
-******************************************************************/
-.commentlist {
-  /* general comment classes */
-
-  /* vcard */
-
-  /* end .commentlist .vcard */
-
-  /* comment content */
-
-  /* end .commentlist .comment_content */
-
-  /* comment reply link */
-
-  /* end .commentlist .comment-reply-link */
-
-}
-.commentlist li {
-  position: relative;
-  clear: both;
-  overflow: hidden;
-  list-style-type: none;
-  margin-bottom: 1.5em;
-  padding: 0.7335em 10px;
-  /* end .commentlist li ul.children */
-
-}
-.commentlist li:last-child {
-  margin-bottom: 0;
-}
-.commentlist li ul.children {
-  margin: 0;
-}
-.commentlist li[class*=depth-] {
-  margin-top: 1.1em;
-}
-.commentlist li.depth-1 {
-  margin-left: 0;
-  margin-top: 0;
-}
-.commentlist li:not(.depth-1) {
-  margin-right: -10px;
-  margin-left: -10px;
-  margin-top: 0;
-  padding-bottom: 0;
-}
-.commentlist .odd {
-  background: #eee;
-}
-.commentlist .even {
-  background: #fefefe;
-}
-.commentlist .vcard cite.fn {
-  font-weight: 700;
-  font-style: normal;
-}
-.commentlist .vcard time {
-  float: right;
-}
-.commentlist .vcard time a {
-  color: #999;
-  text-decoration: none;
-}
-.commentlist .vcard time a:hover {
-  text-decoration: underline;
-}
-.commentlist .vcard img.avatar {
-  position: absolute;
-  left: 10px;
-  padding: 2px;
-  border: 1px solid #cecece;
-  background: #fff;
-}
-.commentlist .comment_content {
-  margin-left: 50px;
-}
-.commentlist .comment_content p {
-  margin: 0.7335em 0 1.5em;
-  font-size: 1em;
-  line-height: 1.5em;
-}
-.commentlist .comment-reply-link {
-  text-decoration: none;
-  float: right;
-  background: #4598bb;
-  padding: 3px 5px;
-  color: #fff;
-  opacity: 0.65;
-  margin-bottom: 10px;
-  font-weight: 700;
-  font-size: 0.9em;
-}
-.commentlist .comment-reply-link:hover,
-.commentlist .comment-reply-link:focus {
-  opacity: 1;
-}
-/* end .commentlist */
-/******************************************************************
-COMMENT FORM STYLES
-******************************************************************/
-.respond-form {
-  margin: 1.5em 10px;
-  padding-bottom: 2.2em;
-}
-.respond-form form {
-  margin: 0.75em 0;
-}
-.respond-form form li {
-  list-style-type: none;
-  clear: both;
-  margin-bottom: 0.7335em;
-}
-.respond-form form li label,
-.respond-form form li small {
-  display: none;
-}
-.respond-form form input[type=text],
-.respond-form form input[type=email],
-.respond-form form input[type=url],
-.respond-form form textarea {
-  padding: 3px 6px;
-  background: #efefef;
-  border: 2px solid #cecece;
-  line-height: 1.5em;
-  /* form validation */
-
-}
-.respond-form form input[type=text]:focus,
-.respond-form form input[type=email]:focus,
-.respond-form form input[type=url]:focus,
-.respond-form form textarea:focus {
-  background: #fff;
-}
-.respond-form form input[type=text]:invalid,
-.respond-form form input[type=email]:invalid,
-.respond-form form input[type=url]:invalid,
-.respond-form form textarea:invalid {
-  outline: none;
-  border-color: #fbc2c4;
-  background-color: #f6e7eb;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -ms-box-shadow: none;
-  box-shadow: none;
-}
-.respond-form form input[type=text],
-.respond-form form input[type=email],
-.respond-form form input[type=url] {
-  max-width: 400px;
-  min-width: 250px;
-}
-.respond-form form textarea {
-  resize: none;
-  width: 97.3%;
-  height: 150px;
-}
-/* comment submit button */
-/* comment form title */
-#comment-form-title {
-  margin: 0 0 1.1em;
-}
-/* cancel comment reply link */
-/* logged in comments */
-/* allowed tags */
-#allowed_tags {
-  margin: 1.5em 10px 0.7335em 0;
-}
-/* no comments */
-.nocomments {
-  margin: 0 20px 1.1em;
-}
-/*********************
-SIDEBARS & ASIDES
-*********************/
-/*********************
-FOOTER STYLES
-*********************/
-footer {
-  clear: both;
 }
 /*
 LARGER MOBILE DEVICES
