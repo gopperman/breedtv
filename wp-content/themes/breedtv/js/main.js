@@ -1,4 +1,14 @@
 /* Author: Greg Opperman */
+String.prototype.decodeHTML = function() {
+    var map = {"gt":">" /* , … */};
+    return this.replace(/&(#(?:x[0-9a-f]+|\d+)|[a-z]+);?/gi, function($0, $1) {
+        if ($1[0] === "#") {
+            return String.fromCharCode($1[1].toLowerCase() === "x" ? parseInt($1.substr(2), 16)  : parseInt($1.substr(1), 10));
+        } else {
+            return map.hasOwnProperty($1) ? map[$1] : $0;
+        }
+    });
+};
 
 var f, vimurl, status;
 var title = $('#title'), link = $('.permalink'), fbshare = $('.fbshare'), tweet = $('.tweet'), tags = $('#tags'); 
@@ -71,6 +81,7 @@ function breedTV() {
 			history.pushState({url: permalink, visited: "true"}, vid['title'], '/' + vid['slug']);
 		}
 		title.html('<a class="permalink">' + vid['title'] + "</a>");
+		document.title = vid['title'].decodeHTML() + " | BreedTV";
 		link.attr('href', permalink);
 		fbshare.attr('href', "https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(permalink));
 		tweet.attr('href', "http://twitter.com/intent/tweet?via=breedtv&url=" + encodeURIComponent(permalink) + "&text=" + encodeURI(vid['title']));
