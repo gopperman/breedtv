@@ -1,4 +1,6 @@
 <?php 
+header("Access-Control-Allow-Origin: *"); 
+
 $wp_query = new WP_Query($args);
 while (have_posts()) : the_post();
   $url = get_post_meta(get_the_ID(), 'URL', true);
