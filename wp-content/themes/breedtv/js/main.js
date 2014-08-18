@@ -12,6 +12,7 @@ String.prototype.decodeHTML = function() {
 
 var f, vimurl, status;
 var title = $('#title'), link = $('.permalink'), fbshare = $('.fbshare'), tweet = $('.tweet'), tags = $('#tags'); 
+
 /*** breedTV singleton ***/
 function breedTV() {
 	this.queue = [];
@@ -190,7 +191,13 @@ jQuery(document).ready(function () {
     if(state.url) {
 			window.location.href = state.url;
     }
-});
+	});
+	//Shortcut Key
+	$( "body" ).keypress(function( event ) {
+  	if (event.charCode == 107) {
+    	 btv.next();
+    }
+  });
 });
 
 function onYouTubeIframeAPIReady() {
