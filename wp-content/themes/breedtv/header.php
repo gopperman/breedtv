@@ -29,18 +29,18 @@
 		<div id="video-info">
 			<p><img src="/img/favicon-84x84.png" alt="BreedTV" /></p>
 			<h2 id="title"><a href="" class="permalink">Loading...</a></h2>
-			<p id="share"><a href="" class="permalink">link</a> &middot; 
-			<a target="_blank" class="fbshare" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbreedtv.com.com">share</a> &middot; 
+			<p id="share"><a href="" class="permalink">link</a> &middot;
+			<a target="_blank" class="fbshare" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fbreedtv.com.com">share</a> &middot;
 			<a target="_blank" class="tweet" href="https://twitter.com/intent/tweet?url=http%3a%2f%2fbreedtv.com&via=breedtv">tweet</a></p>
 		</div>
 		<div id = "tags"></div>
 		<div id="social">
 			<p><img src="/img/favicon-32x32.png" alt="BreedTV" /></p>
 			<iframe class="like" src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fbreedtv&amp;width&amp;layout=button&amp;action=like&amp;show_faces=false&amp;share=false&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:35px;" allowTransparency="true"></iframe>
-			<iframe class="follow" allowtransparency="true" frameborder="0" scrolling="no"  src="//platform.twitter.com/widgets/follow_button.html?screen_name=breedtv&show_count=false&show_screen_name=false"></iframe>	
+			<iframe class="follow" allowtransparency="true" frameborder="0" scrolling="no"  src="//platform.twitter.com/widgets/follow_button.html?screen_name=breedtv&show_count=false&show_screen_name=false"></iframe>
 		</div>
 		<div class="colophon">
-			<p><a target="_blank" href="//gopperman.com">@gopperman</a> &middot; Danger</p>
+			<p><a target="_blank" href="//gopperman.com">@gopperman</a> &middot; Danger &middot; <a href="//twitter.com/drewSaysGoVeg">Drew</a></p>
 			<p><a target="_blank" href="//thosebreeders.com">Breeders</a></p>
 		</div>
 	</header>
