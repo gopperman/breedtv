@@ -40,7 +40,7 @@
 			<iframe class="follow" allowtransparency="true" frameborder="0" scrolling="no"  src="//platform.twitter.com/widgets/follow_button.html?screen_name=breedtv&show_count=false&show_screen_name=false"></iframe>
 		</div>
 		<div class="colophon">
-			<p><a target="_blank" href="//gopperman.com">@gopperman</a> &middot; Danger &middot; <a href="//twitter.com/drewSaysGoVeg">Drew</a></p>
+			<p><a target="_blank" href="//gopperman.com">@gopperman</a> &middot; <a href="//twitter.com/dangersez">Danger</a> &middot; <a href="//twitter.com/drewSaysGoVeg">Drew</a></p>
 			<p><a target="_blank" href="//thosebreeders.com">Breeders</a></p>
 		</div>
 	</header>
