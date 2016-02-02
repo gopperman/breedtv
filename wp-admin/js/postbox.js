@@ -3,69 +3,99 @@
 var postboxes;
 
 (function($) {
+	var $document = $( document );
+
 	postboxes = {
-		add_postbox_toggles : function(page, args) {
-			var self = this;
+		handle_click : function () {
+			var $el = $( this ),
+				p = $el.parent( '.postbox' ),
+				id = p.attr( 'id' ),
+				ariaExpandedValue;
 
-			self.init(page, args);
+			if ( 'dashboard_browser_nag' === id ) {
+				return;
+			}
 
-			$('.postbox h3, .postbox .handlediv').bind('click.postboxes', function() {
-				var p = $(this).parent('.postbox'), id = p.attr('id');
+			p.toggleClass( 'closed' );
 
-				if ( 'dashboard_browser_nag' == id )
-					return;
+			ariaExpandedValue = ! p.hasClass( 'closed' );
 
-				p.toggleClass('closed');
+			if ( $el.hasClass( 'handlediv' ) ) {
+				// The handle button was clicked.
+				$el.attr( 'aria-expanded', ariaExpandedValue );
+			} else {
+				// The handle heading was clicked.
+				$el.closest( '.postbox' ).find( 'button.handlediv' )
+					.attr( 'aria-expanded', ariaExpandedValue );
+			}
 
-				if ( page != 'press-this' )
-					self.save_state(page);
+			if ( postboxes.page !== 'press-this' ) {
+				postboxes.save_state( postboxes.page );
+			}
 
-				if ( id ) {
-					if ( !p.hasClass('closed') && $.isFunction(postboxes.pbshow) )
-						self.pbshow(id);
-					else if ( p.hasClass('closed') && $.isFunction(postboxes.pbhide) )
-						self.pbhide(id);
+			if ( id ) {
+				if ( !p.hasClass('closed') && $.isFunction( postboxes.pbshow ) ) {
+					postboxes.pbshow( id );
+				} else if ( p.hasClass('closed') && $.isFunction( postboxes.pbhide ) ) {
+					postboxes.pbhide( id );
 				}
-			});
+			}
 
-			$('.postbox h3 a').click( function(e) {
+			$document.trigger( 'postbox-toggled', p );
+		},
+
+		add_postbox_toggles : function (page, args) {
+			var $handles = $( '.postbox .hndle, .postbox .handlediv' );
+
+			this.page = page;
+			this.init( page, args );
+
+			$handles.on( 'click.postboxes',  this.handle_click );
+
+			$('.postbox .hndle a').click( function(e) {
 				e.stopPropagation();
 			});
 
-			$( '.postbox a.dismiss' ).bind( 'click.postboxes', function() {
+			$( '.postbox a.dismiss' ).on( 'click.postboxes', function( e ) {
 				var hide_id = $(this).parents('.postbox').attr('id') + '-hide';
+				e.preventDefault();
 				$( '#' + hide_id ).prop('checked', false).triggerHandler('click');
-				return false;
 			});
 
 			$('.hide-postbox-tog').bind('click.postboxes', function() {
-				var box = $(this).val();
+				var $el = $(this),
+					boxId = $el.val(),
+					$postbox = $( '#' + boxId );
 
-				if ( $(this).prop('checked') ) {
-					$('#' + box).show();
-					if ( $.isFunction( postboxes.pbshow ) )
-						self.pbshow( box );
+				if ( $el.prop( 'checked' ) ) {
+					$postbox.show();
+					if ( $.isFunction( postboxes.pbshow ) ) {
+						postboxes.pbshow( boxId );
+					}
 				} else {
-					$('#' + box).hide();
-					if ( $.isFunction( postboxes.pbhide ) )
-						self.pbhide( box );
+					$postbox.hide();
+					if ( $.isFunction( postboxes.pbhide ) ) {
+						postboxes.pbhide( boxId );
+					}
 				}
-				self.save_state(page);
-				self._mark_area();
+				postboxes.save_state( page );
+				postboxes._mark_area();
+				$document.trigger( 'postbox-toggled', $postbox );
 			});
 
 			$('.columns-prefs input[type="radio"]').bind('click.postboxes', function(){
 				var n = parseInt($(this).val(), 10);
 
 				if ( n ) {
-					self._pb_edit(n);
-					self.save_order(page);
+					postboxes._pb_edit(n);
+					postboxes.save_order( page );
 				}
 			});
 		},
 
 		init : function(page, args) {
-			var isMobile = $(document.body).hasClass('mobile');
+			var isMobile = $( document.body ).hasClass( 'mobile' ),
+				$handleButtons = $( '.postbox .handlediv' );
 
 			$.extend( this, args || {} );
 			$('#wpbody-content').css('overflow','hidden');
@@ -82,8 +112,10 @@ var postboxes;
 				helper: 'clone',
 				opacity: 0.65,
 				stop: function() {
-					if ( $(this).find('#dashboard_browser_nag').is(':visible') && 'dashboard_browser_nag' != this.firstChild.id ) {
-						$(this).sortable('cancel');
+					var $el = $( this );
+
+					if ( $el.find( '#dashboard_browser_nag' ).is( ':visible' ) && 'dashboard_browser_nag' != this.firstChild.id ) {
+						$el.sortable('cancel');
 						return;
 					}
 
@@ -103,6 +135,12 @@ var postboxes;
 			}
 
 			this._mark_area();
+
+			// Set the handle buttons `aria-expanded` attribute initial value on page load.
+			$handleButtons.each( function () {
+				var $el = $( this );
+				$el.attr( 'aria-expanded', ! $el.parent( '.postbox' ).hasClass( 'closed' ) );
+			});
 		},
 
 		save_state : function(page) {
@@ -159,6 +197,8 @@ var postboxes;
 			if ( el ) {
 				el.className = el.className.replace(/columns-\d+/, 'columns-' + n);
 			}
+
+			$( document ).trigger( 'postboxes-columnchange' );
 		},
 
 		_pb_change : function() {

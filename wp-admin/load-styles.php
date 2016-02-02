@@ -3,7 +3,7 @@
 /**
  * Disable error reporting
  *
- * Set this to error_reporting( E_ALL ) or error_reporting( E_ALL | E_STRICT ) for debugging
+ * Set this to error_reporting( -1 ) for debugging
  */
 error_reporting(0);
 
@@ -11,89 +11,9 @@ error_reporting(0);
 define( 'ABSPATH', dirname(dirname(__FILE__)) . '/' );
 define( 'WPINC', 'wp-includes' );
 
-/**
- * @ignore
- */
-function __() {}
-
-/**
- * @ignore
- */
-function _x() {}
-
-/**
- * @ignore
- */
-function add_filter() {}
-
-/**
- * @ignore
- */
-function esc_attr() {}
-
-/**
- * @ignore
- */
-function apply_filters() {}
-
-/**
- * @ignore
- */
-function get_option() {}
-
-/**
- * @ignore
- */
-function is_lighttpd_before_150() {}
-
-/**
- * @ignore
- */
-function add_action() {}
-
-/**
- * @ignore
- */
-function do_action_ref_array() {}
-
-/**
- * @ignore
- */
-function get_bloginfo() {}
-
-/**
- * @ignore
- */
-function is_admin() {return true;}
-
-/**
- * @ignore
- */
-function site_url() {}
-
-/**
- * @ignore
- */
-function admin_url() {}
-
-/**
- * @ignore
- */
-function wp_guess_url() {}
-
-function get_file($path) {
-
-	if ( function_exists('realpath') )
-		$path = realpath($path);
-
-	if ( ! $path || ! @is_file($path) )
-		return '';
-
-	return @file_get_contents($path);
-}
-
-require(ABSPATH . '/wp-includes/script-loader.php');
-require(ABSPATH . '/wp-includes/version.php');
+require( ABSPATH . 'wp-admin/includes/noop.php' );
+require( ABSPATH . WPINC . '/script-loader.php' );
+require( ABSPATH . WPINC . '/version.php' );
 
 $load = preg_replace( '/[^a-z0-9,_-]+/i', '', $_GET['load'] );
 $load = array_unique( explode( ',', $load ) );
@@ -110,7 +30,7 @@ $out = '';
 $wp_styles = new WP_Styles();
 wp_default_styles($wp_styles);
 
-foreach( $load as $handle ) {
+foreach ( $load as $handle ) {
 	if ( !array_key_exists($handle, $wp_styles->registered) )
 		continue;
 
@@ -124,10 +44,10 @@ foreach( $load as $handle ) {
 
 	$content = get_file( $path ) . "\n";
 
-	if ( strpos( $style->src, '/wp-includes/css/' ) === 0 ) {
-		$content = str_replace( '../images/', '../wp-includes/images/', $content );
-		$content = str_replace( '../js/tinymce/', '../wp-includes/js/tinymce/', $content );
-		$content = str_replace( '../fonts/', '../wp-includes/fonts/', $content );
+	if ( strpos( $style->src, '/' . WPINC . '/css/' ) === 0 ) {
+		$content = str_replace( '../images/', '../' . WPINC . '/images/', $content );
+		$content = str_replace( '../js/tinymce/', '../' . WPINC . '/js/tinymce/', $content );
+		$content = str_replace( '../fonts/', '../' . WPINC . '/fonts/', $content );
 		$out .= $content;
 	} else {
 		$out .= str_replace( '../images/', 'images/', $content );
